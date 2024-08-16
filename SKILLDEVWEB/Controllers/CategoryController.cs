@@ -6,19 +6,20 @@ namespace SKILLDEVWEB.Controllers
 {
     public class CategoryController : Controller
     {
-        private readonly ICategoryRepository _categoryRepository;
-        public CategoryController(ICategoryRepository categoryRepository)
+        //private readonly ICategoryRepository _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
+        public CategoryController(IUnitOfWork unitOfWork)
         {
-            _categoryRepository = categoryRepository;
+            _unitOfWork = unitOfWork;
         }
         public IActionResult Index()
         {
-            List<Category> categorylist = _categoryRepository.GetAll().OrderBy(s => s.DisplayOrder).ToList();
+            List<Category> categorylist = _unitOfWork.Category.GetAll().OrderBy(s => s.DisplayOrder).ToList();
             return View(categorylist);
         }
         public IActionResult CreateCategory()
         {
-            var Displayorder = (_categoryRepository.GetAll().Max(selector => selector.DisplayOrder)) + 1;
+            var Displayorder = (_unitOfWork.Category.GetAll().Max(selector => selector.DisplayOrder)) + 1;
             Category category = new Category();
             category.DisplayOrder = Displayorder;
             return View(category);
@@ -36,8 +37,8 @@ namespace SKILLDEVWEB.Controllers
             }
             if (ModelState.IsValid)
             {
-                _categoryRepository.Add(category);
-                _categoryRepository.Save();
+                _unitOfWork.Category.Add(category);
+                _unitOfWork.Save();
                 TempData["Mess"] = "Category created Succesfully";
                 return RedirectToAction("index", "Category");
             }
@@ -51,9 +52,9 @@ namespace SKILLDEVWEB.Controllers
             {
                 return NotFound();
             }
-            //Category? category = _categoryRepository.Categories.Find(id);
-            Category? category = _categoryRepository.GetFirstOrDefault(u => u.CategoryId == id);
-            /*Category? category2 = _categoryRepository.Categories.Where(u => u.CategoryId == id).FirstOrDefault()*/
+            //Category? category = _unitOfWork.Categories.Find(id);
+            Category? category = _unitOfWork.Category.GetFirstOrDefault(u => u.CategoryId == id);
+            /*Category? category2 = _unitOfWork.Categories.Where(u => u.CategoryId == id).FirstOrDefault()*/
             ;
             if (category == null)
             {
@@ -67,8 +68,8 @@ namespace SKILLDEVWEB.Controllers
 
             if (ModelState.IsValid)
             {
-                _categoryRepository.Update(category);
-                _categoryRepository.Save();
+                _unitOfWork.Category.Update(category);
+                _unitOfWork.Save();
                 TempData["Mess"] = "Category Edited Succesfully";
                 return RedirectToAction("index", "Category");
             }
@@ -81,9 +82,9 @@ namespace SKILLDEVWEB.Controllers
             {
                 return NotFound();
             }
-            //Category? category = _categoryRepository.Categories.Find(id);
-            Category? category1 = _categoryRepository.GetFirstOrDefault(u => u.CategoryId == id);
-            //Category? category2 = _categoryRepository.Categories.Where(u => u.CategoryId == id).FirstOrDefault();
+            //Category? category = _unitOfWork.Categories.Find(id);
+            Category? category1 = _unitOfWork.Category.GetFirstOrDefault(u => u.CategoryId == id);
+            //Category? category2 = _unitOfWork.Categories.Where(u => u.CategoryId == id).FirstOrDefault();
             if (category1 == null)
             {
                 return NotFound();
@@ -93,11 +94,11 @@ namespace SKILLDEVWEB.Controllers
         [HttpPost]
         public IActionResult DeleteCategory(int? id)
         {
-            Category? category = _categoryRepository.GetFirstOrDefault(u => u.CategoryId == id);
+            Category? category = _unitOfWork.Category.GetFirstOrDefault(u => u.CategoryId == id);
             if (ModelState.IsValid)
             {
-                _categoryRepository.Remove(category);
-                _categoryRepository.Save();
+                _unitOfWork.Category.Remove(category);
+                _unitOfWork.Save();
                 TempData["Delete"] = "Category Deleted Succesfully";
                 return RedirectToAction("index", "Category");
             }
