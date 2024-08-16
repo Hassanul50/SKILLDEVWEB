@@ -2,8 +2,9 @@
 using SKILLDEVWEB.DataAccess.Repository.IRepository;
 using SKILLDEVWEB.Model.Models;
 
-namespace SKILLDEVWEB.Controllers
+namespace SKILLDEVWEB.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class CategoryController : Controller
     {
         //private readonly ICategoryRepository _unitOfWork;
@@ -19,7 +20,7 @@ namespace SKILLDEVWEB.Controllers
         }
         public IActionResult CreateCategory()
         {
-            var Displayorder = (_unitOfWork.Category.GetAll().Max(selector => selector.DisplayOrder)) + 1;
+            var Displayorder = _unitOfWork.Category.GetAll().Max(selector => selector.DisplayOrder) + 1;
             Category category = new Category();
             category.DisplayOrder = Displayorder;
             return View(category);

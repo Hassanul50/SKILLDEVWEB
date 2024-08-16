@@ -2,8 +2,9 @@ using Microsoft.AspNetCore.Mvc;
 using SKILLDEVWEB.Model.Models;
 using System.Diagnostics;
 
-namespace SKILLDEVWEB.Controllers
+namespace SKILLDEVWEB.Areas.Customer.Controllers
 {
+    [Area("Customer")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
