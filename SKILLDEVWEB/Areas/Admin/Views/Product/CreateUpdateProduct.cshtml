@@ -1,0 +1,94 @@
+﻿@model ProductVM
+
+
+<form method="post" enctype="multipart/form-data">
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <h2 class="text-primary">
+              @(Model.Product.ProductId !=0?"Update":"Create") Product
+            </h2>
+            <hr />
+        </div>
+        <input asp-for="Product.ProductId" hidden />
+        <div class="mb-3 row p-1">
+            <label asp-for="Product.Title" class="p-0"></label>
+            <input asp-for="Product.Title" class="form-control" />
+            <span asp-validation-for="Product.Title" class="text-danger"></span>
+        </div>
+        <div class="mb-3 row p-1">
+            <label asp-for="Product.Description" class="p-0"></label>
+            <input asp-for="Product.Description" class="form-control"/>
+            
+        <div class="mb-3 row p-1">
+            <label asp-for="Product.ISBN" class="p-0"></label>
+            <input asp-for="Product.ISBN" class="form-control" />
+            <span asp-validation-for="Product.ISBN" class="text-danger"></span>
+        </div>
+        <div class="mb-3 row p-1">
+            <label asp-for="Product.Author" class="p-0"></label>
+            <input asp-for="Product.Author" class="form-control" />
+            <span asp-validation-for="Product.Author" class="text-danger"></span>
+        </div>
+        <div class="mb-3 row p-1">
+            <label asp-for="Product.ListPrice" class="p-0"></label>
+            <input asp-for="Product.ListPrice" class="form-control" />
+            <span asp-validation-for="Product.ListPrice" class="text-danger"></span>
+        </div>
+        <div class="mb-3 row p-1">
+            <label asp-for="Product.Price" class="p-0"></label>
+            <input asp-for="Product.Price" class="form-control" />
+            <span asp-validation-for="Product.Price" class="text-danger"></span>
+        </div>
+        <div class="mb-3 row p-1">
+            <label asp-for="Product.Price50" class="p-0"></label>
+            <input asp-for="Product.Price50" class="form-control" />
+            <span asp-validation-for="Product.Price50" class="text-danger"></span>
+        </div>
+        <div class="mb-3 row p-1">
+            <label asp-for="Product.Price100" class="p-0"></label>
+            <input asp-for="Product.Price100" class="form-control" />
+            <span asp-validation-for="Product.Price100" class="text-danger"></span>
+        </div>
+        <div class="mb-3 row p-1">
+            <label asp-for="Product.CategoryId" class="p-0"></label>
+            <select asp-for="Product.CategoryId" asp-items="@Model.CategoryList" class="form-select">
+                <option value="">-- Select Category --</option>
+            </select>
+            
+        </div>
+        <div class="mb-3 row p-1">
+            <label asp-for="Product.ImgUrl" class="p-0"></label>
+            <input type="file" class="form-control" />
+        </div>
+
+        <div class="row">
+            <div class="col-6 col-md-3">
+                @if (Model.Product.ProductId != 0)
+                {
+                    <button type="submit" class="btn btn-primary form-control"><i class="bi bi-floppy2-fill"></i> Update</button>
+                }
+                else
+                {
+                    <button type="submit" class="btn btn-primary form-control"><i class="bi bi-floppy2-fill"></i> Create</button>
+                }
+                
+            </div>
+            <div class="col-6 col-md-3">
+                <a asp-controller="Product" asp-action="index" class=" btn btn-outline-secondary form-control"> <i class="bi bi-skip-backward-fill"></i> Back to List</a>
+            </div>
+        </div>
+        <div asp-validation-summary="All" class="text-danger"></div>
+        @* <div asp-validation-summary="ModelOnly" class="text-danger"></div> *@
+    </div>
+</form>
+@section scripts{
+    @{
+        <script type="text/javascript">
+            tinymce.init({
+                selector: 'Textarea',  // change this value according to the HTML
+                toolbar: 'undo redo | styles | bold italic | alignleft aligncenter alignright alignjustify | outdent indent'
+            });
+        </script>
+        <partial name="_ValidationScriptsPartial"></partial>
+    }
+}
