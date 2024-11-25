@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SKILLDEVWEB.DataAccess.Data;
 
@@ -10,9 +11,11 @@ using SKILLDEVWEB.DataAccess.Data;
 namespace SKILLDEVWEB.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241004220912_addedProductFK")]
+    partial class addedProductFK
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -91,9 +94,6 @@ namespace SKILLDEVWEB.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImgUrl")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<double>("ListPrice")
                         .HasColumnType("float");
 
@@ -124,7 +124,6 @@ namespace SKILLDEVWEB.Migrations
                             CategoryId = 1,
                             Description = "TEST",
                             ISBN = "ABC-123",
-                            ImgUrl = "",
                             ListPrice = 30.0,
                             Price = 25.0,
                             Price100 = 18.0,
@@ -138,7 +137,6 @@ namespace SKILLDEVWEB.Migrations
                             CategoryId = 3,
                             Description = "TEST-2",
                             ISBN = "ABC-645",
-                            ImgUrl = "",
                             ListPrice = 54.0,
                             Price = 47.0,
                             Price100 = 20.0,
@@ -152,7 +150,6 @@ namespace SKILLDEVWEB.Migrations
                             CategoryId = 2,
                             Description = "TEST-3",
                             ISBN = "ABC-1485",
-                            ImgUrl = "",
                             ListPrice = 301.0,
                             Price = 252.0,
                             Price100 = 180.0,

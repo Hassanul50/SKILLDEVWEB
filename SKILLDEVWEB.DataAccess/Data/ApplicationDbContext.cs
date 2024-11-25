@@ -30,7 +30,9 @@ namespace SKILLDEVWEB.DataAccess.Data
                     ListPrice = 30,
                     Price = 25,
                     Price50 = 20,
-                    Price100 = 18
+                    Price100 = 18,
+                    CategoryId = 1,
+                    ImgUrl = ""
                 },
                 new Product
                 {
@@ -42,7 +44,9 @@ namespace SKILLDEVWEB.DataAccess.Data
                     ListPrice = 54,
                     Price = 47,
                     Price50 = 32,
-                    Price100 = 20
+                    Price100 = 20,
+                    CategoryId = 3,
+                    ImgUrl = ""
                 },
                 new Product
                 {
@@ -54,7 +58,9 @@ namespace SKILLDEVWEB.DataAccess.Data
                     ListPrice = 301,
                     Price = 252,
                     Price50 = 208,
-                    Price100 = 180
+                    Price100 = 180,
+                    CategoryId = 2,
+                    ImgUrl = ""
                 }
 
                 );
