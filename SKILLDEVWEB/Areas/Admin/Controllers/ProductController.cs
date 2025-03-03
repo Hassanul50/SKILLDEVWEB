@@ -10,9 +10,11 @@ namespace SKILLDEVWEB.Areas.Admin.Controllers
     public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        public ProductController(IUnitOfWork unitOfWork)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
         {
             _unitOfWork = unitOfWork;
+            _webHostEnvironment = webHostEnvironment;
         }
         public IActionResult Index()
         {
@@ -22,9 +24,9 @@ namespace SKILLDEVWEB.Areas.Admin.Controllers
         }
         public IActionResult CreateUpdateProduct(int? id)
         {
-            var Displayorder = _unitOfWork.Product.GetAll().Max(selector => selector.ProductId) + 1;
+            //var Displayorder = _unitOfWork.Product.GetAll().Max(selector => selector.ProductId) + 1;
             Product Product = new Product();
-            Product.ProductId = Displayorder;
+            //Product.ProductId = Displayorder;
             IEnumerable<SelectListItem> CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
             {
                 Text = u.CategoryName,
@@ -49,7 +51,7 @@ namespace SKILLDEVWEB.Areas.Admin.Controllers
 
         }
         [HttpPost]
-        public IActionResult CreateUpdateProduct(ProductVM obj, IFormFile? file)
+        public IActionResult CreateUpdateProduct(ProductVM productVM, IFormFile? file)
         {
             //if (Product.Title == Product.t.ToString())
             //{
@@ -61,12 +63,34 @@ namespace SKILLDEVWEB.Areas.Admin.Controllers
             //}
             if (ModelState.IsValid)
             {
-                _unitOfWork.Product.Add(obj.Product);
+                string wwwRoothPath = _webHostEnvironment.WebRootPath;
+                if (file != null)
+                {
+                    string FileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                    string productPath = Path.Combine(wwwRoothPath, @"images\product");
+                    using (var fileStream = new FileStream(Path.Combine(productPath, FileName), FileMode.Create))
+                    {
+                        file.CopyTo(fileStream);
+                    }
+                    productVM.Product.ImgUrl = @"\images\product\" + FileName;
+                }
+                //var Displayorder = _unitOfWork.Product.GetAll().Max(selector => selector.ProductId) + 1;
+                //productVM.Product.ProductId = Displayorder;
+                _unitOfWork.Product.Add(productVM.Product);
                 _unitOfWork.Save();
                 TempData["Mess"] = "Product created Succesfully";
-                return RedirectToAction("index", "Product");
+                return RedirectToAction("index");
             }
-            return View();
+            else
+            {
+                productVM.CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
+                {
+                    Text = u.CategoryName,
+                    Value = u.CategoryId.ToString()
+                });
+                return View(productVM);
+            }
+
 
         }
 

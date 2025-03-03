@@ -7,6 +7,7 @@ namespace SKILLDEVWEB.Model.Models
     public class Product
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ProductId { get; set; }
         [Required]
         public string Title { get; set; }
