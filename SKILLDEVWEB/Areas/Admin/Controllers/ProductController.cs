@@ -22,9 +22,9 @@ namespace SKILLDEVWEB.Areas.Admin.Controllers
         }
         public IActionResult CreateUpdateProduct(int? id)
         {
-            var Displayorder = _unitOfWork.Product.GetAll().Max(selector => selector.ProductId) + 1;
+            //var Displayorder = _unitOfWork.Product.GetAll().Max(selector => selector.ProductId) + 1;
             Product Product = new Product();
-            Product.ProductId = Displayorder;
+            //Product.ProductId = Displayorder;
             IEnumerable<SelectListItem> CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
             {
                 Text = u.CategoryName,
