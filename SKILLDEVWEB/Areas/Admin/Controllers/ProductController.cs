@@ -18,7 +18,7 @@ namespace SKILLDEVWEB.Areas.Admin.Controllers
         }
         public IActionResult Index()
         {
-            List<Product> Productlist = _unitOfWork.Product.GetAll().OrderBy(s => s.ProductId).ToList();
+            List<Product> Productlist = _unitOfWork.Product.GetAll(inCludeParametre: "Category").OrderBy(s => s.ProductId).ToList();
 
             return View(Productlist);
         }
@@ -68,15 +68,34 @@ namespace SKILLDEVWEB.Areas.Admin.Controllers
                 {
                     string FileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
                     string productPath = Path.Combine(wwwRoothPath, @"images\product");
+                    if (!string.IsNullOrEmpty(productVM.Product.ImgUrl))
+                    {
+                        // delete img
+                        var oldImagePath = Path.Combine(wwwRoothPath, productVM.Product.ImgUrl.TrimStart('\\'));
+                        if (System.IO.File.Exists(oldImagePath))
+                        {
+                            System.IO.File.Delete(oldImagePath);
+                        }
+                    }
+
                     using (var fileStream = new FileStream(Path.Combine(productPath, FileName), FileMode.Create))
                     {
                         file.CopyTo(fileStream);
                     }
                     productVM.Product.ImgUrl = @"\images\product\" + FileName;
+
+                }
+                if (productVM.Product.ProductId == 0)
+                {
+                    _unitOfWork.Product.Add(productVM.Product);
+                }
+                else
+                {
+                    _unitOfWork.Product.Update(productVM.Product);
                 }
                 //var Displayorder = _unitOfWork.Product.GetAll().Max(selector => selector.ProductId) + 1;
                 //productVM.Product.ProductId = Displayorder;
-                _unitOfWork.Product.Add(productVM.Product);
+
                 _unitOfWork.Save();
                 TempData["Mess"] = "Product created Succesfully";
                 return RedirectToAction("index");
@@ -153,5 +172,14 @@ namespace SKILLDEVWEB.Areas.Admin.Controllers
             return View();
 
         }
+
+
+        public IActionResult Newproduct()
+        {
+
+            List<Product> Productlist = _unitOfWork.Product.GetAll(inCludeParametre: "Category").OrderBy(s => s.ProductId).ToList();
+            return Json(new { data = Productlist });
+        }
+
     }
 }
