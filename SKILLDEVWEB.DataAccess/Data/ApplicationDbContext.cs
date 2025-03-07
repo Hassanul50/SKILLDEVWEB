@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using SKILLDEVWEB.Model.Models;
 
 namespace SKILLDEVWEB.DataAccess.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
@@ -13,6 +15,7 @@ namespace SKILLDEVWEB.DataAccess.Data
         public DbSet<Product> Products { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Category>().HasData(
                 new Category { CategoryId = 1, CategoryName = "Action", DisplayOrder = 1 },
                 new Category { CategoryId = 2, CategoryName = "Scifi", DisplayOrder = 2 },
